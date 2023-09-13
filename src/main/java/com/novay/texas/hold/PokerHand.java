@@ -54,7 +54,8 @@ public class PokerHand implements Comparable<PokerHand>  {
 
 	@Override
 	public int compareTo(PokerHand o) {
-		return this.raiting.compareTo(o.raiting);
+		return (this.raiting < o.raiting) ? -1 
+				: (this.raiting > o.raiting ? 1 : this.sumValues().compareTo(o.sumValues()));
 	}
 
 	public void setCombinations(Combinations combinations) {
@@ -63,6 +64,13 @@ public class PokerHand implements Comparable<PokerHand>  {
 	
 	public Integer getRaiting() {
 		return raiting;
+	}
+	
+	private Integer sumValues() {
+		return cards
+				.stream()
+				.map(c->c.getValue().getRating())
+				.reduce((r1, r2)->r1+r2).orElse(0);
 	}
 	
 	@Override
